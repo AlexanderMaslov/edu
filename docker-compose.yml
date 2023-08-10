@@ -1,0 +1,10 @@
+services:
+  front:
+    build:
+      context: .
+    ports:
+      - ${PORT}:3000
+    environment:
+      - CMD=${CMD:?}
+    volumes:
+      - ./app:/app/app
