@@ -1,43 +1,22 @@
-import React from "react";
-
-interface User {
-  id: number;
-  name: string;
-  email: string;
+import React, { Suspense } from "react";
+import { UserTable } from "./UserTable";
+import Link from "next/link";
+interface Props {
+  searchParams: { sortOrder?: string };
 }
 
-async function getData() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/users");
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
-
-const UsersPage = async () => {
-  const data: User[] = await getData();
+const UsersPage = async ({ searchParams }: Props) => {
+  const { sortOrder } = searchParams;
 
   return (
     <>
       <h1>Users</h1>
-      <table className="table-bordered table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((user) => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Link href="/users/new" className="btn">
+        New User
+      </Link>
+      <Suspense fallback={<p>loading...</p>}>
+        <UserTable sortOrder={sortOrder} />
+      </Suspense>
     </>
   );
 };
