@@ -1,0 +1,10 @@
+services:
+  restore:
+    image: busybox
+    volumes:
+      - dbdata:/dbdata
+      - ./backup:/backup
+    command: /bin/sh -c "tar xvf /backup/backup.tar --strip 1 -C /dbdata"
+
+volumes:
+  dbdata:

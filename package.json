@@ -7,11 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "db": "./scripts/db.sh",
+    "migrate": "prisma migrate dev",
+    "backup": "./scripts/backup.sh",
+    "restore": "./scripts/restore.sh"
   },
   "dependencies": {
+    "@prisma/client": "^5.5.2",
     "classnames": "^2.3.2",
     "next": "14.0.1",
+    "prisma": "^5.5.2",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^4.11.0"
