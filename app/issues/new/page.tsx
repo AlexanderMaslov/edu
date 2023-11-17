@@ -1,6 +1,7 @@
 'use client';
 
 import { ErrorMessage } from '@/app/components/ErrorMessage';
+import { Spinner } from '@/app/components/Spinner';
 import { Issue, createIssueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, Callout, TextField } from '@radix-ui/themes';
@@ -16,7 +17,7 @@ const NewIssuePage = () => {
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Issue>({
     resolver: zodResolver(createIssueSchema),
   });
@@ -55,7 +56,9 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit New Issue</Button>
+        <Button disabled={isSubmitting}>
+          Submit New Issue {isSubmitting && <Spinner />}
+        </Button>
       </form>
     </div>
   );
