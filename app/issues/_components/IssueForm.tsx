@@ -2,7 +2,7 @@
 
 import { ErrorMessage } from '@/app/components/ErrorMessage';
 import { Spinner } from '@/app/components/Spinner';
-import { IssueFormData, createIssueSchema } from '@/app/validationSchemas';
+import { IssueFormData, issueSchema } from '@/app/validationSchemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Issue } from '@prisma/client';
 import { Button, Callout, TextField } from '@radix-ui/themes';
@@ -24,7 +24,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(issueSchema),
   });
   const [error, setError] = useState('');
 
