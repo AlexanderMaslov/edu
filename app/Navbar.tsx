@@ -1,6 +1,13 @@
 'use client';
 
-import { Box, Container, Flex } from '@radix-ui/themes';
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from '@radix-ui/themes';
 import classNames from 'classnames';
 import { Session } from 'next-auth';
 import Link from 'next/link';
@@ -47,7 +54,27 @@ const Navbar = ({ user }: Props) => {
             </ul>
           </Flex>
           <Box>
-            {user && <Link href="/api/auth/signout">Log out</Link>}
+            {user && (
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger>
+                  <Avatar
+                    src={user.image!}
+                    fallback="?"
+                    size="2"
+                    radius="full"
+                    className="cursor-pointer"
+                  />
+                </DropdownMenu.Trigger>
+                <DropdownMenu.Content>
+                  <DropdownMenu.Label>
+                    <Text size="2">{user.email}</Text>
+                  </DropdownMenu.Label>
+                  <DropdownMenu.Item>
+                    <Link href="/api/auth/signout">Log out</Link>
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            )}
             {!user && <Link href="/api/auth/signin">Login</Link>}
           </Box>
         </Flex>
