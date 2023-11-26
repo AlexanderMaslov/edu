@@ -5,7 +5,6 @@ import { Inter } from 'next/font/google';
 import Navbar from './Navbar';
 import './globals.css';
 import './theme-config.css';
-import { auth } from './auth';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,13 +22,11 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await auth();
-
   return (
     <html lang="en">
       <body className={inter.variable}>
         <Theme appearance="light" accentColor="violet">
-          <Navbar user={session?.user} />
+          <Navbar />
           <main className="p-5">
             <Container>{children}</Container>
           </main>
