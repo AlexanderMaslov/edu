@@ -1,6 +1,15 @@
-import { auth } from './auth';
+import { Pagination } from './components/Pagination';
 
-export default async function Home() {
-  const session = await auth();
-  return <pre>{JSON.stringify(session, null, 2)}</pre>;
+interface Props {
+  searchParams: { page: string };
+}
+
+export default async function Home({ searchParams }: Props) {
+  return (
+    <Pagination
+      itemCount={100}
+      pageSize={10}
+      currentPage={parseInt(searchParams.page)}
+    />
+  );
 }
