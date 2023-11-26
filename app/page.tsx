@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import { Pagination } from './components/Pagination';
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Dashboard',
+  description: 'View a summary of project issues',
+};
 
 interface Props {
   searchParams: { page: string };

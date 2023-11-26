@@ -1,11 +1,17 @@
 import { IssueStatusBadge, Link } from '@/app/components';
 import prisma from '@/prisma/client';
 import { Issue, Status } from '@prisma/client';
-import { Table } from '@radix-ui/themes';
-import NextLink from 'next/link';
-import { IssueActions } from './issueActions';
 import { ArrowUpIcon } from '@radix-ui/react-icons';
+import { Table } from '@radix-ui/themes';
+import type { Metadata } from 'next';
+import NextLink from 'next/link';
 import { Pagination } from '../components/Pagination';
+import { IssueActions } from './issueActions';
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Issue List',
+  description: 'View all project issues',
+};
 
 interface Props {
   searchParams: {
