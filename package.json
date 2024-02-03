@@ -1,0 +1,15 @@
+{
+  "name": "edu",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/AlexanderMaslov/edu.git",
+  "author": "AlexanderMaslov <maslov-composer@yandex.ru>",
+  "license": "MIT",
+  "volta": {
+    "node": "20.11.0",
+    "yarn": "1.22.21"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
