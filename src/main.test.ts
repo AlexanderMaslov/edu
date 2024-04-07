@@ -1,8 +1,9 @@
-import { it, expect, describe } from 'vitest';
-import { i } from 'vitest/dist/reporters-P7C2ytIv.js';
+import { describe, expect, it } from 'vitest';
 
 describe('group', () => {
-  it('should', () => {
-    expect(1).toBeTruthy();
+  it('should', async () => {
+    const response = await fetch('/categories');
+    const data = await response.json();
+    expect(data).toHaveLength(3);
   });
 });
