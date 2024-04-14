@@ -1,8 +1,4 @@
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
+import { render, screen, waitForElementToBeRemoved } from '@/tests/utils';
 import ProductDetail from './ProductDetail';
 import { server } from '../../mocks/server';
 import { http, HttpResponse } from 'msw';

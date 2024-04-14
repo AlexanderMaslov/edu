@@ -1,13 +1,8 @@
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from '@testing-library/react';
-import ProductList from './ProductList';
-import { server } from '../../mocks/server';
-import { http, HttpResponse, delay } from 'msw';
+import { render, screen, waitForElementToBeRemoved } from '@/tests/utils';
+import { delay, http, HttpResponse } from 'msw';
 import { db } from '../../mocks/db';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { server } from '../../mocks/server';
+import ProductList from './ProductList';
 
 describe('ProductList', () => {
   const productIds: number[] = [];
@@ -19,21 +14,8 @@ describe('ProductList', () => {
     });
   });
 
-  const renderComponent = () => {
-    const client = new QueryClient({
-      defaultOptions: {
-        queries: { retry: false },
-      },
-    });
-    render(
-      <QueryClientProvider client={client}>
-        <ProductList />
-      </QueryClientProvider>,
-    );
-  };
-
   it('should render a list of products', async () => {
-    renderComponent();
+    render(<ProductList />);
 
     const items = await screen.findAllByRole('listitem');
     expect(items.length).toBeGreaterThan(0);
@@ -45,7 +27,7 @@ describe('ProductList', () => {
         return HttpResponse.json([]);
       }),
     );
-    renderComponent();
+    render(<ProductList />);
 
     const messagge = await screen.findByText(/no products/i);
     expect(messagge).toBeInTheDocument();
@@ -58,7 +40,7 @@ describe('ProductList', () => {
       }),
     );
 
-    renderComponent();
+    render(<ProductList />);
 
     expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
@@ -70,13 +52,13 @@ describe('ProductList', () => {
         return HttpResponse.json([]);
       }),
     );
-    renderComponent();
+    render(<ProductList />);
 
     expect(await screen.findByText(/loading/i)).toBeInTheDocument();
   });
 
   it('should remove the loading indicator after data is fetching', async () => {
-    renderComponent();
+    render(<ProductList />);
 
     await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
@@ -87,7 +69,7 @@ describe('ProductList', () => {
         return HttpResponse.error();
       }),
     );
-    renderComponent();
+    render(<ProductList />);
 
     await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
   });
