@@ -1,11 +1,9 @@
-import { describe, expect, it } from 'vitest';
-import { faker } from '@faker-js/faker';
+import { db } from '../mocks/db';
 
 describe('group', () => {
   it('should', async () => {
-    console.log({
-      name: faker.commerce.productName(),
-      price: faker.commerce.price({ min: 1, max: 100 }),
-    });
+    const product = db.product.create({ name: 'apple' });
+    console.log('product: ', product);
+    console.log(db.product.getAll());
   });
 });
