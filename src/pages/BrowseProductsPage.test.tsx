@@ -9,13 +9,13 @@ describe('BrowseProductsPage', () => {
       http.get('/categories', async () => {
         await delay();
         return HttpResponse.json([]);
-      }),
+      })
     );
 
     render(<BrowseProductsPage />);
 
     expect(
-      screen.getByRole('progressbar', { name: /categories/i }),
+      screen.getByRole('progressbar', { name: /categories/i })
     ).toBeInTheDocument();
   });
 
@@ -24,13 +24,13 @@ describe('BrowseProductsPage', () => {
       http.get('/categories', async () => {
         await delay();
         return HttpResponse.json([]);
-      }),
+      })
     );
 
     render(<BrowseProductsPage />);
 
     await waitForElementToBeRemoved(() =>
-      screen.getByRole('progressbar', { name: /categories/i }),
+      screen.getByRole('progressbar', { name: /categories/i })
     );
   });
 
@@ -39,13 +39,13 @@ describe('BrowseProductsPage', () => {
       http.get('/products', async () => {
         await delay();
         return HttpResponse.json([]);
-      }),
+      })
     );
 
     render(<BrowseProductsPage />);
 
     expect(
-      screen.getByRole('progressbar', { name: /products/i }),
+      screen.getByRole('progressbar', { name: /products/i })
     ).toBeInTheDocument();
   });
 
@@ -54,13 +54,34 @@ describe('BrowseProductsPage', () => {
       http.get('/products', async () => {
         await delay();
         return HttpResponse.json([]);
-      }),
+      })
     );
 
     render(<BrowseProductsPage />);
 
     await waitForElementToBeRemoved(() =>
-      screen.getByRole('progressbar', { name: /products/i }),
+      screen.getByRole('progressbar', { name: /products/i })
     );
+  });
+
+  it('should not render an error if categories cannot be fetched', async () => {
+    server.use(http.get('/categories', () => HttpResponse.error()));
+    render(<BrowseProductsPage />);
+
+    await waitForElementToBeRemoved(() =>
+      screen.queryByRole('progressbar', { name: /categories/i })
+    );
+
+    expect(screen.queryByText(/error/i)).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('combobox', { name: /category/i })
+    ).not.toBeInTheDocument();
+  });
+
+  it('should render an error if product cannot be fetched', async () => {
+    server.use(http.get('/products', () => HttpResponse.error()));
+    render(<BrowseProductsPage />);
+
+    expect(await screen.findByText(/error/i)).toBeInTheDocument();
   });
 });
