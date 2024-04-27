@@ -46,4 +46,13 @@ describe('ProductForm', () => {
       screen.getByRole('combobox', { name: /category/i }),
     ).toHaveTextContent(category.name);
   });
+
+  it('should put focus on the name field', async () => {
+    render(<ProductForm onSubmit={vi.fn()} />);
+
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const nameInput = screen.getByPlaceholderText(/name/i);
+    expect(nameInput).toHaveFocus();
+  });
 });
