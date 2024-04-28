@@ -2,6 +2,7 @@ import { render, screen, waitForElementToBeRemoved } from '@/tests/utils';
 import ProductForm from './ProductForm';
 import { Category, Product } from '../entities';
 import { db } from '~/mocks/db';
+import userEvent from '@testing-library/user-event';
 
 describe('ProductForm', () => {
   let category: Category;
@@ -54,5 +55,26 @@ describe('ProductForm', () => {
 
     const nameInput = screen.getByPlaceholderText(/name/i);
     expect(nameInput).toHaveFocus();
+  });
+
+  it('should display an error if name is missing', async () => {
+    const user = await userEvent.setup();
+    render(<ProductForm onSubmit={vi.fn()} />);
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const priceInput = screen.getByPlaceholderText(/price/i);
+    await user.type(priceInput, '10');
+
+    const categoryInput = screen.getByRole('combobox', { name: /category/i });
+    await user.click(categoryInput);
+    const options = screen.getAllByRole('option');
+    await user.click(options[0]);
+
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+
+    const error = screen.getByRole('alert');
+    expect(error).toBeInTheDocument();
+    expect(error).toHaveTextContent(/required/i);
   });
 });
