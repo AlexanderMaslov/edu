@@ -80,6 +80,7 @@ describe('ProductForm', () => {
       await user.type(priceInput, '10');
 
       const categoryInput = screen.getByRole('combobox', { name: /category/i });
+      await user.tab();
       await user.click(categoryInput);
       const options = screen.getAllByRole('option');
       await user.click(options[0]);
@@ -126,6 +127,7 @@ describe('ProductForm', () => {
       }
 
       const categoryInput = screen.getByRole('combobox', { name: /category/i });
+      await user.tab();
       await user.click(categoryInput);
       const options = screen.getAllByRole('option');
       await user.click(options[0]);
@@ -138,4 +140,59 @@ describe('ProductForm', () => {
       expect(error).toHaveTextContent(errorMessage);
     },
   );
+
+  it('should call onSubmit with the correct data', async () => {
+    const user = await userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<ProductForm onSubmit={onSubmit} />);
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const nameInput = screen.getByPlaceholderText(/name/i);
+    await user.type(nameInput, 'name');
+
+    const priceInput = screen.getByPlaceholderText(/price/i);
+    await user.type(priceInput, '10');
+
+    const categoryInput = screen.getByRole('combobox', { name: /category/i });
+    await user.tab();
+    await user.click(categoryInput);
+    const options = screen.getAllByRole('option');
+    await user.click(options[0]);
+
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+
+    expect(onSubmit).toHaveBeenNthCalledWith(1, {
+      name: 'name',
+      price: 10,
+      categoryId: category.id,
+    });
+  });
+
+  it('should display a toast if submission fails', async () => {
+    const user = await userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<ProductForm onSubmit={onSubmit} />);
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const nameInput = screen.getByPlaceholderText(/name/i);
+    await user.type(nameInput, 'name');
+
+    const priceInput = screen.getByPlaceholderText(/price/i);
+    await user.type(priceInput, '10');
+
+    const categoryInput = screen.getByRole('combobox', { name: /category/i });
+    await user.tab();
+    await user.click(categoryInput);
+    const options = screen.getAllByRole('option');
+    await user.click(options[0]);
+
+    onSubmit.mockRejectedValue({});
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+
+    const toast = await screen.findByRole('status');
+    expect(toast).toBeInTheDocument();
+    expect(toast).toHaveTextContent(/error/i);
+  });
 });
