@@ -57,24 +57,39 @@ describe('ProductForm', () => {
     expect(nameInput).toHaveFocus();
   });
 
-  it('should display an error if name is missing', async () => {
-    const user = await userEvent.setup();
-    render(<ProductForm onSubmit={vi.fn()} />);
-    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+  it.each([
+    { scenario: 'missing', errorMessage: /required/i },
+    {
+      scenario: 'longer than 255 characters',
+      name: 'a'.repeat(256),
+      errorMessage: /255/i,
+    },
+  ])(
+    'should display an error if name is $scenario',
+    async ({ name, errorMessage }) => {
+      const user = await userEvent.setup();
+      render(<ProductForm onSubmit={vi.fn()} />);
+      await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
 
-    const priceInput = screen.getByPlaceholderText(/price/i);
-    await user.type(priceInput, '10');
+      const nameInput = screen.getByPlaceholderText(/name/i);
+      if (name !== undefined) {
+        await user.type(nameInput, name);
+      }
 
-    const categoryInput = screen.getByRole('combobox', { name: /category/i });
-    await user.click(categoryInput);
-    const options = screen.getAllByRole('option');
-    await user.click(options[0]);
+      const priceInput = screen.getByPlaceholderText(/price/i);
+      await user.type(priceInput, '10');
 
-    const submitButton = screen.getByRole('button');
-    await user.click(submitButton);
+      const categoryInput = screen.getByRole('combobox', { name: /category/i });
+      await user.click(categoryInput);
+      const options = screen.getAllByRole('option');
+      await user.click(options[0]);
 
-    const error = screen.getByRole('alert');
-    expect(error).toBeInTheDocument();
-    expect(error).toHaveTextContent(/required/i);
-  });
+      const submitButton = screen.getByRole('button');
+      await user.click(submitButton);
+
+      const error = screen.getByRole('alert');
+      expect(error).toBeInTheDocument();
+      expect(error).toHaveTextContent(errorMessage);
+    },
+  );
 });
