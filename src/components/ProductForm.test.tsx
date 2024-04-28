@@ -195,4 +195,79 @@ describe('ProductForm', () => {
     expect(toast).toBeInTheDocument();
     expect(toast).toHaveTextContent(/error/i);
   });
+
+  it('should disable the submit button upon submisson', async () => {
+    const user = await userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<ProductForm onSubmit={onSubmit} />);
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const nameInput = screen.getByPlaceholderText(/name/i);
+    await user.type(nameInput, 'name');
+
+    const priceInput = screen.getByPlaceholderText(/price/i);
+    await user.type(priceInput, '10');
+
+    const categoryInput = screen.getByRole('combobox', { name: /category/i });
+    await user.tab();
+    await user.click(categoryInput);
+    const options = screen.getAllByRole('option');
+    await user.click(options[0]);
+
+    onSubmit.mockReturnValue(new Promise(() => {}));
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+
+    expect(submitButton).toBeDisabled();
+  });
+
+  it('should re-eanble the submit button after submisson', async () => {
+    const user = await userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<ProductForm onSubmit={onSubmit} />);
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const nameInput = screen.getByPlaceholderText(/name/i);
+    await user.type(nameInput, 'name');
+
+    const priceInput = screen.getByPlaceholderText(/price/i);
+    await user.type(priceInput, '10');
+
+    const categoryInput = screen.getByRole('combobox', { name: /category/i });
+    await user.tab();
+    await user.click(categoryInput);
+    const options = screen.getAllByRole('option');
+    await user.click(options[0]);
+
+    onSubmit.mockResolvedValue({});
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+
+    expect(submitButton).not.toBeDisabled();
+  });
+
+  it('should re-eanble the submit button after submisson', async () => {
+    const user = await userEvent.setup();
+    const onSubmit = vi.fn();
+    render(<ProductForm onSubmit={onSubmit} />);
+    await waitForElementToBeRemoved(() => screen.queryByText(/loading/i));
+
+    const nameInput = screen.getByPlaceholderText(/name/i);
+    await user.type(nameInput, 'name');
+
+    const priceInput = screen.getByPlaceholderText(/price/i);
+    await user.type(priceInput, '10');
+
+    const categoryInput = screen.getByRole('combobox', { name: /category/i });
+    await user.tab();
+    await user.click(categoryInput);
+    const options = screen.getAllByRole('option');
+    await user.click(options[0]);
+
+    onSubmit.mockRejectedValue('error');
+    const submitButton = screen.getByRole('button');
+    await user.click(submitButton);
+
+    expect(submitButton).not.toBeDisabled();
+  });
 });
