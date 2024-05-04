@@ -1,13 +1,15 @@
 import './App.css';
-import configureStore from '@/store/configureStore';
+import makeStore from '@/store/configureStore';
 import { bugAdded, bugResolved } from '@/store/bugs';
+import { projectAdded } from '@/store/projects';
 
-const store = configureStore();
+const store = makeStore();
 
-store.dispatch(bugAdded('bug1'));
-store.dispatch(bugAdded('bug2'));
-store.dispatch(bugAdded('bug3'));
-store.dispatch(bugResolved(1));
+store.dispatch(bugAdded({ description: 'bug1' }));
+store.dispatch(bugAdded({ description: 'bug2' }));
+store.dispatch(bugAdded({ description: 'bug3' }));
+store.dispatch(bugResolved({ id: 1 }));
+store.dispatch(projectAdded({ name: 'project1' }));
 
 const App = () => {
   return (

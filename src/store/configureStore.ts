@@ -1,13 +1,12 @@
-import { createStore } from 'redux';
-import { devToolsEnhancer } from 'redux-devtools-extension';
-import reducer from './bugs';
+import { configureStore } from '@reduxjs/toolkit';
+import bugs from './bugs';
+import projects from './projects';
 
-export default function configureStore() {
-  const store = createStore(
-    reducer,
-    devToolsEnhancer({
-      trace: true,
-    }),
-  );
-  return store;
+export default function makeStore() {
+  return configureStore({
+    reducer: {
+      bugs,
+      projects,
+    },
+  });
 }
