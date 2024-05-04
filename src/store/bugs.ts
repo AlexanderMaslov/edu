@@ -1,9 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from '@reduxjs/toolkit';
+import type { State } from './configureStore';
 
 interface Bug {
   id: number;
   description: string;
   resolved: boolean;
+  userId?: number;
 }
 
 let lastId = 0;
@@ -13,6 +15,11 @@ const slice = createSlice({
   name: 'bugs',
   initialState,
   reducers: {
+    bugAssignedToUser: (bugs, action) => {
+      const { bugId, userId } = action.payload;
+      const index = bugs.findIndex((bug) => bug.id === bugId);
+      bugs[index].userId = userId;
+    },
     bugAdded: (bugs, action) => {
       bugs.push({
         id: ++lastId,
@@ -28,5 +35,16 @@ const slice = createSlice({
   },
 });
 
-export const { bugAdded, bugResolved } = slice.actions;
+export const { bugAdded, bugResolved, bugAssignedToUser } = slice.actions;
 export default slice.reducer;
+
+export const getUnResolvedBugs = createSelector(
+  [(state: State) => state.bugs],
+  (bugs) => bugs.filter((bug) => !bug.resolved),
+);
+
+export const getBugsByUser = (userId: number) =>
+  createSelector(
+    (state: State) => state.bugs,
+    (bugs) => bugs.filter((bug) => bug.userId === userId),
+  );
