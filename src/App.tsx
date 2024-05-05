@@ -11,16 +11,16 @@ import { userAdded } from '@/store/users';
 
 const store = makeStore();
 
-store.dispatch(bugAdded({ description: 'bug1' }));
-store.dispatch(bugAdded({ description: 'bug2' }));
-store.dispatch(bugAdded({ description: 'bug3' }));
-store.dispatch(bugAssignedToUser({ bugId: 1, userId: 1 }));
-store.dispatch(bugResolved({ id: 1 }));
-store.dispatch(projectAdded({ name: 'project1' }));
+// store.dispatch(bugAdded({ description: 'bug1' }));
+// store.dispatch(bugAdded({ description: 'bug2' }));
+// store.dispatch(bugAdded({ description: 'bug3' }));
+// store.dispatch(bugAssignedToUser({ bugId: 1, userId: 1 }));
+// store.dispatch(bugResolved({ id: 1 }));
+// store.dispatch(projectAdded({ name: 'project1' }));
 store.dispatch(userAdded({ name: 'user1' }));
-store.dispatch(userAdded({ name: 'user2' }));
+// store.dispatch(userAdded({ name: 'user2' }));
 
-console.log(getBugsByUser(1)(store.getState()));
+store.dispatch({ type: 'error', payload: { message: 'message...' } });
 
 const App = () => {
   return (
