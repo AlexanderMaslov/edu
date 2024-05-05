@@ -18,11 +18,17 @@
     "@rsbuild/plugin-react": "^0.6.8",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
+    "msw": "^2.2.14",
     "redux-devtools-extension": "^2.13.9",
     "typescript": "^5.4.2"
   },
   "volta": {
     "node": "20.12.2",
     "yarn": "1.22.22"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }
