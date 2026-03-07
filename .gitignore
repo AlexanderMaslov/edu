@@ -1,0 +1,52 @@
+# All files without extension
+*
+!*.*
+!*/
+!Makefile
+
+# Compiled binaries
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+
+# Build directories
+build/
+out/
+bin/
+dist/
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# IDE and editor files
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+*.ncb
+*.vcxproj.user
+.vs/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Debug/log files
+*.log
+*.dSYM/
+core
+core.*
