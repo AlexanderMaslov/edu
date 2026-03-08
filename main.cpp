@@ -1,10 +1,8 @@
-#include <cmath>
 #include <iostream>
 
 using namespace std;
 
 int main() {
-  double result = pow(2, 52);
-  cout << result << endl;
+  cout << sizeof(long long) << endl;
   return 0;
 }
