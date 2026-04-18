@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      canvas {
+        outline: 1px dashed wheat;
+        image-rendering: pixelated;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas">fallback....</canvas>
+    <script>
+      (function draw() {
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        ctx.beginPath();
+        ctx.rect(50, 50, 50, 50);
+        ctx.stroke();
+      })();
+    </script>
+  </body>
+</html>
