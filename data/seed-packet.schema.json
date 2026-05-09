@@ -1,0 +1,1235 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "definitions": {
+        "CompanionPlanting": {
+            "description": "Companion planting relationships - which plants help or hurt each other",
+            "properties": {
+                "allelopathicEffects": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "badCompanions": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "goodCompanions": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "CompetitiveNature": {
+            "description": "How aggressively plants compete for resources - affects spacing",
+            "enum": [
+                "aggressive",
+                "moderate",
+                "gentle"
+            ],
+            "type": "string"
+        },
+        "Distance": {
+            "properties": {
+                "unit": {
+                    "$ref": "#/definitions/RawDistanceUnit"
+                },
+                "value": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "unit",
+                "value"
+            ],
+            "type": "object"
+        },
+        "DistanceRange": {
+            "properties": {
+                "max": {
+                    "$ref": "#/definitions/Distance"
+                },
+                "min": {
+                    "$ref": "#/definitions/Distance"
+                }
+            },
+            "required": [
+                "max",
+                "min"
+            ],
+            "type": "object"
+        },
+        "DrainagePreference": {
+            "description": "How quickly water moves through soil - affects plant health and watering",
+            "enum": [
+                "well-draining",
+                "moisture-retentive",
+                "wet",
+                "dry"
+            ],
+            "type": "string"
+        },
+        "EdiblePart": {
+            "description": "Which parts of the plant are edible",
+            "enum": [
+                "leaves",
+                "fruit",
+                "root",
+                "flower",
+                "stem",
+                "seed"
+            ],
+            "type": "string"
+        },
+        "EnvironmentalRequirements": {
+            "description": "Environmental conditions the plant needs to thrive",
+            "properties": {
+                "hardiness": {
+                    "properties": {
+                        "coolSeasonHardy": {
+                            "type": "boolean"
+                        },
+                        "frostHardy": {
+                            "type": "boolean"
+                        },
+                        "heatTolerant": {
+                            "type": "boolean"
+                        },
+                        "usdaZone": {
+                            "$ref": "#/definitions/USDAHardinessZoneRangeMap"
+                        }
+                    },
+                    "required": [
+                        "usdaZone"
+                    ],
+                    "type": "object"
+                },
+                "light": {
+                    "$ref": "#/definitions/LightPreference"
+                },
+                "soil": {
+                    "properties": {
+                        "drainage": {
+                            "$ref": "#/definitions/DrainagePreference"
+                        },
+                        "organicMatter": {
+                            "$ref": "#/definitions/OrganicMatterPreference"
+                        },
+                        "ph": {
+                            "$ref": "#/definitions/PhPreference"
+                        },
+                        "texture": {
+                            "$ref": "#/definitions/SoilTexture"
+                        }
+                    },
+                    "type": "object"
+                },
+                "temperatureRanges": {
+                    "properties": {
+                        "ideal": {
+                            "$ref": "#/definitions/TemperatureRange"
+                        },
+                        "soilMin": {
+                            "$ref": "#/definitions/Temperature"
+                        },
+                        "transplant": {
+                            "$ref": "#/definitions/TemperatureRange"
+                        }
+                    },
+                    "type": "object"
+                },
+                "water": {
+                    "$ref": "#/definitions/WaterNeeds"
+                }
+            },
+            "required": [
+                "light",
+                "water"
+            ],
+            "type": "object"
+        },
+        "GrowthCharacteristics": {
+            "description": "Physical growth characteristics that affect garden design",
+            "properties": {
+                "habit": {
+                    "$ref": "#/definitions/PlantGrowthHabit"
+                },
+                "lifespan": {
+                    "$ref": "#/definitions/PlantLifespan"
+                },
+                "matureSize": {
+                    "properties": {
+                        "height": {
+                            "$ref": "#/definitions/DistanceRange"
+                        },
+                        "spread": {
+                            "$ref": "#/definitions/DistanceRange"
+                        }
+                    },
+                    "required": [
+                        "height",
+                        "spread"
+                    ],
+                    "type": "object"
+                },
+                "rate": {
+                    "$ref": "#/definitions/PlantGrowthRate"
+                },
+                "rootDepth": {
+                    "$ref": "#/definitions/RootDepth"
+                },
+                "supportNeeds": {
+                    "$ref": "#/definitions/SupportNeeds"
+                }
+            },
+            "required": [
+                "habit",
+                "lifespan",
+                "matureSize",
+                "rootDepth",
+                "supportNeeds"
+            ],
+            "type": "object"
+        },
+        "HarvestMethod": {
+            "description": "How plants are harvested affects garden planning and succession planting",
+            "enum": [
+                "cut-and-come-again",
+                "single-harvest",
+                "continuous",
+                "periodic"
+            ],
+            "type": "string"
+        },
+        "LightPreference": {
+            "description": "Light requirements - critical for photosynthesis and plant health",
+            "enum": [
+                "full-sun",
+                "partial-sun",
+                "shade"
+            ],
+            "type": "string"
+        },
+        "NutrientNeeds": {
+            "description": "Nutrient requirements affect fertilization and companion planting",
+            "enum": [
+                "light",
+                "moderate",
+                "heavy"
+            ],
+            "type": "string"
+        },
+        "OrganicMatterPreference": {
+            "description": "Organic matter content affects soil fertility and structure",
+            "enum": [
+                "low",
+                "moderate",
+                "high",
+                "very-high"
+            ],
+            "type": "string"
+        },
+        "PhPreference": {
+            "description": "Soil acidity/alkalinity affects nutrient availability to plants\npH scale: 0-14, where 7 is neutral, <7 is acidic, >7 is alkaline",
+            "enum": [
+                "acidic",
+                "neutral",
+                "alkaline",
+                "adaptable"
+            ],
+            "type": "string"
+        },
+        "PlantCareInfo": {
+            "description": "Plant care and maintenance information",
+            "properties": {
+                "commonDiseases": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "commonPests": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "organicTreatments": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "vulnerabilityPeriods": {
+                    "items": {
+                        "$ref": "#/definitions/PlantingSeason"
+                    },
+                    "type": "array"
+                }
+            },
+            "type": "object"
+        },
+        "PlantFamily": {
+            "description": "Plant family names used for companion planting relationships.\nThese represent common groupings that gardeners use when planning\nwhich plants grow well together or should be kept apart.",
+            "enum": [
+                "buttercups",
+                "irises",
+                "begonias",
+                "arums",
+                "cannas",
+                "ranunculuses",
+                "daisies",
+                "peonies",
+                "snapdragons",
+                "geraniums",
+                "grasses",
+                "tomatoes",
+                "peppers",
+                "beans",
+                "peas",
+                "corn",
+                "squash",
+                "pumpkins",
+                "cucumbers",
+                "carrots",
+                "onions",
+                "garlic",
+                "shallots",
+                "leeks",
+                "lettuce",
+                "spinach",
+                "radishes",
+                "beets",
+                "potatoes",
+                "sweet potatoes",
+                "turnips",
+                "rutabagas",
+                "brassicas",
+                "cabbage",
+                "broccoli",
+                "cauliflower",
+                "kale",
+                "kohlrabi",
+                "mustard",
+                "arugula",
+                "nightshades",
+                "eggplant",
+                "cucurbits",
+                "watermelons",
+                "cantaloupes",
+                "alliums",
+                "legumes",
+                "basil",
+                "parsley",
+                "chives",
+                "dill",
+                "sage",
+                "oregano",
+                "rosemary",
+                "thyme",
+                "cilantro",
+                "mint",
+                "lavender",
+                "aromatic herbs",
+                "marigolds",
+                "nasturtiums",
+                "sunflowers",
+                "roses",
+                "calendula",
+                "cosmos",
+                "zinnias",
+                "grains",
+                "wheat",
+                "oats",
+                "apples",
+                "cherries",
+                "apricots",
+                "figs",
+                "berries",
+                "strawberries",
+                "blueberries",
+                "raspberries",
+                "blackberries",
+                "fennel",
+                "asparagus",
+                "parsnips",
+                "melons",
+                "walnut trees",
+                "pole beans",
+                "celery",
+                "okra",
+                "artichokes",
+                "rhubarb",
+                "clover",
+                "buckwheat",
+                "none known"
+            ],
+            "type": "string"
+        },
+        "PlantFunction": {
+            "description": "Primary purpose/function of plants in the garden ecosystem",
+            "enum": [
+                "food",
+                "pollinator",
+                "pest-repellent",
+                "nitrogen-fixer",
+                "ground-cover",
+                "windbreak",
+                "ornamental"
+            ],
+            "type": "string"
+        },
+        "PlantFunctions": {
+            "description": "What role the plant plays in the garden ecosystem",
+            "properties": {
+                "beneficialInsects": {
+                    "type": "boolean"
+                },
+                "pollinatorValue": {
+                    "type": "boolean"
+                },
+                "primary": {
+                    "$ref": "#/definitions/PlantFunction"
+                },
+                "secondary": {
+                    "items": {
+                        "$ref": "#/definitions/PlantFunction"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "primary"
+            ],
+            "type": "object"
+        },
+        "PlantGrowthHabit": {
+            "description": "Physical growth patterns that affect garden layout and support needs",
+            "enum": [
+                "bush",
+                "vine",
+                "tree",
+                "groundcover",
+                "upright",
+                "rosette",
+                "climbing",
+                "trailing"
+            ],
+            "type": "string"
+        },
+        "PlantGrowthRate": {
+            "description": "How quickly plants reach maturity - affects garden planning timelines",
+            "enum": [
+                "slow",
+                "moderate",
+                "fast"
+            ],
+            "type": "string"
+        },
+        "PlantLifespan": {
+            "description": "Plant lifespan determines how long a plant lives and when it reproduces",
+            "enum": [
+                "annual",
+                "biennial",
+                "perennial"
+            ],
+            "type": "string"
+        },
+        "PlantPart": {
+            "description": "Which parts of the plant may be toxic (important for plants with mixed safety)",
+            "enum": [
+                "whole-plant",
+                "leaves",
+                "stems",
+                "roots",
+                "flowers",
+                "fruits",
+                "seeds",
+                "sap",
+                "bark",
+                "green-parts"
+            ],
+            "type": "string"
+        },
+        "PlantPropagationMethod": {
+            "description": "How plants are typically reproduced/started",
+            "enum": [
+                "seed",
+                "vegetative",
+                "grafted"
+            ],
+            "type": "string"
+        },
+        "PlantSpacing": {
+            "description": "All spacing requirements for optimal plant growth and garden layout",
+            "properties": {
+                "canIntercrop": {
+                    "type": "boolean"
+                },
+                "minimum": {
+                    "$ref": "#/definitions/Distance"
+                },
+                "optimal": {
+                    "$ref": "#/definitions/Distance"
+                },
+                "rowSpacing": {
+                    "$ref": "#/definitions/Distance"
+                },
+                "thinning": {
+                    "$ref": "#/definitions/DistanceRange"
+                }
+            },
+            "required": [
+                "minimum",
+                "optimal"
+            ],
+            "type": "object"
+        },
+        "PlantStorageStructure": {
+            "description": "Storage structures are specialized plant parts that store energy/nutrients.\nThese affect how plants are propagated and planted.",
+            "enum": [
+                "bulb",
+                "tuber",
+                "rhizome",
+                "corm",
+                "crown",
+                "roots"
+            ],
+            "type": "string"
+        },
+        "PlantingInfo": {
+            "description": "When and how to plant",
+            "properties": {
+                "daysToGermination": {
+                    "$ref": "#/definitions/TimeDurationRange"
+                },
+                "germinationDuration": {
+                    "$ref": "#/definitions/TimeDuration"
+                },
+                "method": {
+                    "$ref": "#/definitions/PlantingMethod"
+                },
+                "seedDepth": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Distance"
+                        },
+                        {
+                            "$ref": "#/definitions/DistanceRange"
+                        }
+                    ]
+                },
+                "timing": {
+                    "properties": {
+                        "seasons": {
+                            "items": {
+                                "$ref": "#/definitions/PlantingSeason"
+                            },
+                            "type": "array"
+                        },
+                        "weeksAfterLastFrost": {
+                            "type": "number"
+                        },
+                        "weeksBeforeLastFrost": {
+                            "type": "number"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "required": [
+                "method"
+            ],
+            "type": "object"
+        },
+        "PlantingMethod": {
+            "description": "How plants are started in the garden",
+            "enum": [
+                "direct-sow",
+                "transplant",
+                "both"
+            ],
+            "type": "string"
+        },
+        "PlantingSeason": {
+            "description": "Planting seasons based on temperature and frost patterns",
+            "enum": [
+                "early-spring",
+                "spring",
+                "late-spring",
+                "summer",
+                "fall",
+                "winter"
+            ],
+            "type": "string"
+        },
+        "ProductionInfo": {
+            "description": "Information about harvesting and food production (only for edible plants)",
+            "properties": {
+                "edibleParts": {
+                    "items": {
+                        "$ref": "#/definitions/EdiblePart"
+                    },
+                    "type": "array"
+                },
+                "harvestDuration": {
+                    "$ref": "#/definitions/TimeDuration"
+                },
+                "harvestMethod": {
+                    "$ref": "#/definitions/HarvestMethod"
+                },
+                "harvestWindow": {
+                    "$ref": "#/definitions/TimeDuration"
+                },
+                "producesFruit": {
+                    "type": "boolean"
+                },
+                "successionPlanting": {
+                    "properties": {
+                        "intervalWeeks": {
+                            "type": "number"
+                        },
+                        "maxSuccessions": {
+                            "type": "number"
+                        },
+                        "recommended": {
+                            "type": "boolean"
+                        },
+                        "seasonalLimitations": {
+                            "items": {
+                                "$ref": "#/definitions/PlantingSeason"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "required": [
+                "producesFruit"
+            ],
+            "type": "object"
+        },
+        "RGBColor": {
+            "properties": {
+                "blue": {
+                    "type": "number"
+                },
+                "green": {
+                    "type": "number"
+                },
+                "red": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "blue",
+                "green",
+                "red"
+            ],
+            "type": "object"
+        },
+        "RawDistanceUnit": {
+            "enum": [
+                "centimeters",
+                "feet",
+                "inches",
+                "meters",
+                "yards"
+            ],
+            "type": "string"
+        },
+        "RawSeedPacketInfo": {
+            "description": "Complete information about a plant variety, typically from a seed packet\nor plant tag. This model supports garden planning and plant placement\noptimization by capturing all relevant growing characteristics.\n\nThe structure is designed to handle different plant types:\n- Food crops (vegetables, fruits, herbs)\n- Ornamental plants (flowers, decorative plants)\n- Functional plants (nitrogen fixers, pest repellents)\n- Trees and perennials\n\nNot all fields will be available for every plant - optional sections\nallow for incomplete data while still being useful for garden planning.",
+            "properties": {
+                "care": {
+                    "$ref": "#/definitions/PlantCareInfo"
+                },
+                "commonName": {
+                    "type": "string"
+                },
+                "companions": {
+                    "$ref": "#/definitions/CompanionPlanting"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "environmental": {
+                    "$ref": "#/definitions/EnvironmentalRequirements"
+                },
+                "functions": {
+                    "$ref": "#/definitions/PlantFunctions"
+                },
+                "growth": {
+                    "$ref": "#/definitions/GrowthCharacteristics"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "latinName": {
+                    "type": "string"
+                },
+                "plantFamily": {
+                    "$ref": "#/definitions/PlantFamily"
+                },
+                "planting": {
+                    "$ref": "#/definitions/PlantingInfo"
+                },
+                "plantingInstructions": {
+                    "type": "string"
+                },
+                "presentation": {
+                    "$ref": "#/definitions/SeedPacketPresentation"
+                },
+                "production": {
+                    "$ref": "#/definitions/ProductionInfo"
+                },
+                "propagationMethod": {
+                    "$ref": "#/definitions/PlantPropagationMethod"
+                },
+                "resources": {
+                    "$ref": "#/definitions/ResourceRequirements"
+                },
+                "seedPacketInfo": {
+                    "$ref": "#/definitions/SeedPacketInfo"
+                },
+                "seedSource": {
+                    "type": "string"
+                },
+                "sellBy": {
+                    "description": "Plant and Seed Packet Data Model\n\nThis file defines the complete data structure for representing plants, seeds, and their\ncharacteristics for garden planning and plant placement optimization.\n\nKey Concepts for Non-Gardeners:\n- Annual: Lives one growing season (e.g., tomatoes, lettuce)\n- Perennial: Lives multiple years (e.g., fruit trees, asparagus)\n- Companion Planting: Some plants grow better together, others inhibit each other\n- Succession Planting: Planting the same crop multiple times for continuous harvest\n- Hardiness Zone: Geographic regions based on average minimum winter temperatures",
+                    "type": "string"
+                },
+                "spacing": {
+                    "$ref": "#/definitions/PlantSpacing"
+                },
+                "storageStructure": {
+                    "$ref": "#/definitions/PlantStorageStructure"
+                },
+                "toxInfo": {
+                    "$ref": "#/definitions/ToxicityInfo"
+                }
+            },
+            "required": [
+                "commonName",
+                "environmental",
+                "functions",
+                "growth",
+                "id",
+                "plantFamily",
+                "planting",
+                "presentation",
+                "propagationMethod",
+                "resources",
+                "spacing"
+            ],
+            "type": "object"
+        },
+        "ResourceRequirements": {
+            "description": "Resource consumption patterns for garden planning",
+            "properties": {
+                "competitiveNature": {
+                    "$ref": "#/definitions/CompetitiveNature"
+                },
+                "nutrients": {
+                    "$ref": "#/definitions/NutrientNeeds"
+                }
+            },
+            "required": [
+                "competitiveNature",
+                "nutrients"
+            ],
+            "type": "object"
+        },
+        "RootDepth": {
+            "description": "Root depth affects water/nutrient competition and companion planting",
+            "enum": [
+                "shallow",
+                "medium",
+                "deep"
+            ],
+            "type": "string"
+        },
+        "SeedPacketInfo": {
+            "description": "Information specific to seed packets (not live plants)",
+            "properties": {
+                "germinationRate": {
+                    "type": "number"
+                },
+                "ntWeightInOz": {
+                    "type": "number"
+                },
+                "seedCount": {
+                    "type": "number"
+                },
+                "storageRequirements": {
+                    "type": "string"
+                },
+                "treatmentRequired": {
+                    "items": {
+                        "$ref": "#/definitions/SeedTreatment"
+                    },
+                    "type": "array"
+                },
+                "viabilityYears": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        },
+        "SeedPacketPresentation": {
+            "properties": {
+                "accentColor": {
+                    "$ref": "#/definitions/RGBColor"
+                },
+                "iconPath": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "accentColor",
+                "iconPath"
+            ],
+            "type": "object"
+        },
+        "SeedTreatment": {
+            "description": "Special treatments some seeds need before planting to germinate properly",
+            "enum": [
+                "scarification",
+                "stratification",
+                "soaking"
+            ],
+            "type": "string"
+        },
+        "SoilTexture": {
+            "description": "Soil texture affects drainage, nutrient retention, and root penetration",
+            "enum": [
+                "sandy",
+                "silt",
+                "clay",
+                "loamy",
+                "rocky"
+            ],
+            "type": "string"
+        },
+        "SupportNeeds": {
+            "description": "Physical support structures needed for healthy growth",
+            "enum": [
+                "none",
+                "stakes",
+                "trellis",
+                "cage",
+                "arbor",
+                "fence"
+            ],
+            "type": "string"
+        },
+        "Temperature": {
+            "properties": {
+                "unit": {
+                    "$ref": "#/definitions/TemperatureUnit"
+                },
+                "value": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "unit",
+                "value"
+            ],
+            "type": "object"
+        },
+        "TemperatureRange": {
+            "properties": {
+                "max": {
+                    "$ref": "#/definitions/Temperature"
+                },
+                "min": {
+                    "$ref": "#/definitions/Temperature"
+                }
+            },
+            "required": [
+                "max",
+                "min"
+            ],
+            "type": "object"
+        },
+        "TemperatureUnit": {
+            "enum": [
+                "fahrenheit",
+                "celsius"
+            ],
+            "type": "string"
+        },
+        "TimeDuration": {
+            "properties": {
+                "unit": {
+                    "$ref": "#/definitions/TimeUnit"
+                },
+                "value": {
+                    "type": "number"
+                }
+            },
+            "required": [
+                "unit",
+                "value"
+            ],
+            "type": "object"
+        },
+        "TimeDurationRange": {
+            "properties": {
+                "max": {
+                    "$ref": "#/definitions/TimeDuration"
+                },
+                "min": {
+                    "$ref": "#/definitions/TimeDuration"
+                }
+            },
+            "required": [
+                "max",
+                "min"
+            ],
+            "type": "object"
+        },
+        "TimeUnit": {
+            "enum": [
+                "days",
+                "hours",
+                "minutes",
+                "seconds"
+            ],
+            "type": "string"
+        },
+        "ToxicityInfo": {
+            "description": "Safety information for plants around humans and animals",
+            "properties": {
+                "humanToxicity": {
+                    "properties": {
+                        "level": {
+                            "$ref": "#/definitions/ToxicityLevel"
+                        },
+                        "notes": {
+                            "type": "string"
+                        },
+                        "symptoms": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "toxicParts": {
+                            "items": {
+                                "$ref": "#/definitions/PlantPart"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "required": [
+                        "level"
+                    ],
+                    "type": "object"
+                },
+                "livestockToxicity": {
+                    "properties": {
+                        "affectedAnimals": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "level": {
+                            "$ref": "#/definitions/ToxicityLevel"
+                        },
+                        "toxicParts": {
+                            "items": {
+                                "$ref": "#/definitions/PlantPart"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "petToxicity": {
+                    "properties": {
+                        "cats": {
+                            "$ref": "#/definitions/ToxicityLevel"
+                        },
+                        "dogs": {
+                            "$ref": "#/definitions/ToxicityLevel"
+                        },
+                        "symptoms": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "toxicParts": {
+                            "items": {
+                                "$ref": "#/definitions/PlantPart"
+                            },
+                            "type": "array"
+                        }
+                    },
+                    "type": "object"
+                },
+                "skinContact": {
+                    "properties": {
+                        "allergen": {
+                            "type": "boolean"
+                        },
+                        "irritant": {
+                            "type": "boolean"
+                        },
+                        "severity": {
+                            "$ref": "#/definitions/ToxicityLevel"
+                        }
+                    },
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        },
+        "ToxicityLevel": {
+            "description": "Toxicity levels for safety planning around children, pets, and livestock",
+            "enum": [
+                "safe",
+                "mildly-toxic",
+                "moderately-toxic",
+                "highly-toxic",
+                "unknown"
+            ],
+            "type": "string"
+        },
+        "USDAHardinessZone": {
+            "description": "USDA Hardiness Zones divide North America into regions based on average\nminimum winter temperatures. Zone 1 is coldest, Zone 11 is warmest.\nSubzones (a/b) provide finer granularity within each zone.",
+            "enum": [
+                1,
+                "1",
+                10,
+                "10",
+                "10a",
+                "10b",
+                11,
+                "11",
+                "11a",
+                "11b",
+                12,
+                "12",
+                "12a",
+                "12b",
+                13,
+                "13",
+                "13a",
+                "13b",
+                "1a",
+                "1b",
+                2,
+                "2",
+                "2a",
+                "2b",
+                3,
+                "3",
+                "3a",
+                "3b",
+                4,
+                "4",
+                "4a",
+                "4b",
+                5,
+                "5",
+                "5a",
+                "5b",
+                6,
+                "6",
+                "6a",
+                "6b",
+                7,
+                "7",
+                "7a",
+                "7b",
+                8,
+                "8",
+                "8a",
+                "8b",
+                9,
+                "9",
+                "9a",
+                "9b"
+            ]
+        },
+        "USDAHardinessZoneRange": {
+            "properties": {
+                "max": {
+                    "$ref": "#/definitions/USDAHardinessZone"
+                },
+                "min": {
+                    "$ref": "#/definitions/USDAHardinessZone"
+                }
+            },
+            "required": [
+                "max",
+                "min"
+            ],
+            "type": "object"
+        },
+        "USDAHardinessZoneRangeMap": {
+            "properties": {
+                "multiSeason": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/USDAHardinessZoneRange"
+                        },
+                        {
+                            "enum": [
+                                1,
+                                "1",
+                                10,
+                                "10",
+                                "10a",
+                                "10b",
+                                11,
+                                "11",
+                                "11a",
+                                "11b",
+                                12,
+                                "12",
+                                "12a",
+                                "12b",
+                                13,
+                                "13",
+                                "13a",
+                                "13b",
+                                "1a",
+                                "1b",
+                                2,
+                                "2",
+                                "2a",
+                                "2b",
+                                3,
+                                "3",
+                                "3a",
+                                "3b",
+                                4,
+                                "4",
+                                "4a",
+                                "4b",
+                                5,
+                                "5",
+                                "5a",
+                                "5b",
+                                6,
+                                "6",
+                                "6a",
+                                "6b",
+                                7,
+                                "7",
+                                "7a",
+                                "7b",
+                                8,
+                                "8",
+                                "8a",
+                                "8b",
+                                9,
+                                "9",
+                                "9a",
+                                "9b"
+                            ]
+                        }
+                    ]
+                },
+                "oneSeason": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/USDAHardinessZoneRange"
+                        },
+                        {
+                            "enum": [
+                                1,
+                                "1",
+                                10,
+                                "10",
+                                "10a",
+                                "10b",
+                                11,
+                                "11",
+                                "11a",
+                                "11b",
+                                12,
+                                "12",
+                                "12a",
+                                "12b",
+                                13,
+                                "13",
+                                "13a",
+                                "13b",
+                                "1a",
+                                "1b",
+                                2,
+                                "2",
+                                "2a",
+                                "2b",
+                                3,
+                                "3",
+                                "3a",
+                                "3b",
+                                4,
+                                "4",
+                                "4a",
+                                "4b",
+                                5,
+                                "5",
+                                "5a",
+                                "5b",
+                                6,
+                                "6",
+                                "6a",
+                                "6b",
+                                7,
+                                "7",
+                                "7a",
+                                "7b",
+                                8,
+                                "8",
+                                "8a",
+                                "8b",
+                                9,
+                                "9",
+                                "9a",
+                                "9b"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "WaterNeeds": {
+            "description": "Water needs affect irrigation planning and plant grouping",
+            "enum": [
+                "low",
+                "moderate",
+                "high",
+                "consistent"
+            ],
+            "type": "string"
+        }
+    },
+    "properties": {
+        "seedPackets": {
+            "items": {
+                "$ref": "#/definitions/RawSeedPacketInfo"
+            },
+            "type": "array"
+        }
+    },
+    "required": [
+        "seedPackets"
+    ],
+    "type": "object"
+}
+
