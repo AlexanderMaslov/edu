@@ -2,6 +2,7 @@
 	"name": "@seeds/models",
 	"private": true,
 	"type": "module",
+	"exports": "./dist/index.js",
 	"scripts": {
 		"dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
 		"build": "tsc -p tsconfig.build.json",
