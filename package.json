@@ -14,6 +14,7 @@
     "pnpm": "11.0.9"
   },
   "devDependencies": {
-    "@manypkg/cli": "^0.25.1"
+    "@manypkg/cli": "^0.25.1",
+    "syncpack": "^15.0.0"
   }
 }
