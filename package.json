@@ -12,5 +12,8 @@
   "volta": {
     "node": "22.16.0",
     "pnpm": "11.0.9"
+  },
+  "devDependencies": {
+    "@manypkg/cli": "^0.25.1"
   }
 }
