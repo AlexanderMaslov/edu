@@ -1,20 +1,22 @@
 {
-  "name": "seeds",
-  "private": true,
-  "scripts": {
-    "build": "FORCE_COLOR=1 pnpm --color run -r build",
-    "lint": "FORCE_COLOR=1 pnpm --color run -r lint",
-    "test": "FORCE_COLOR=1 pnpm --color run -r test",
-    "dev": "FORCE_COLOR=1 pnpm --color run -r dev",
-    "format": "FORCE_COLOR=1 pnpm --color run -r format",
-    "check": "FORCE_COLOR=1 pnpm --color run -r check"
-  },
-  "volta": {
-    "node": "22.16.0",
-    "pnpm": "11.0.9"
-  },
-  "devDependencies": {
-    "@manypkg/cli": "^0.25.1",
-    "syncpack": "^15.0.0"
-  }
+	"name": "seeds",
+	"private": true,
+	"scripts": {
+		"build": "FORCE_COLOR=1 pnpm --color run -r build",
+		"lint": "FORCE_COLOR=1 pnpm --color run -r lint",
+		"test": "FORCE_COLOR=1 pnpm --color run -r test",
+		"dev": "FORCE_COLOR=1 pnpm --color run -r dev",
+		"format": "FORCE_COLOR=1 pnpm --color run -r format",
+		"check": "FORCE_COLOR=1 pnpm --color run -r check"
+	},
+	"volta": {
+		"node": "22.16.0",
+		"pnpm": "11.0.9"
+	},
+	"devDependencies": {
+		"@manypkg/cli": "^0.25.1",
+		"syncpack": "^15.0.0",
+		"prettier": "^3.5.3",
+		"prettier-plugin-svelte": "^3.4.0"
+	}
 }

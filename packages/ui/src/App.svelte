@@ -1,7 +1,12 @@
 <script lang="ts">
 import SeedPacket from './lib/SeedPacket.svelte'
 import { onMount } from 'svelte'
-import { seedPackets, isLoading, error, fetchSeedPackets } from './lib/seed-packets.state.js'
+import {
+	seedPackets,
+	isLoading,
+	error,
+	fetchSeedPackets,
+} from './lib/seed-packets.state.js'
 
 onMount(() => {
 	fetchSeedPackets()
