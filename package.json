@@ -2,12 +2,12 @@
   "name": "seeds",
   "private": true,
   "scripts": {
-    "build": "pnpm --color run -r build",
-    "lint": "pnpm --color run -r lint",
-    "test": "pnpm --color run -r test",
-    "dev": "pnpm --color run -r dev",
-    "format": "pnpm --color run -r format",
-    "check": "pnpm --color run -r check"
+    "build": "FORCE_COLOR=1 pnpm --color run -r build",
+    "lint": "FORCE_COLOR=1 pnpm --color run -r lint",
+    "test": "FORCE_COLOR=1 pnpm --color run -r test",
+    "dev": "FORCE_COLOR=1 pnpm --color run -r dev",
+    "format": "FORCE_COLOR=1 pnpm --color run -r format",
+    "check": "FORCE_COLOR=1 pnpm --color run -r check"
   },
   "volta": {
     "node": "22.16.0",
